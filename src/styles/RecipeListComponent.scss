@@ -1,0 +1,32 @@
+// src/styles/RecipeListComponent.scss
+.recipe-list-container {
+padding: 20px;
+}
+.recipe-list {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+list-style: none;
+padding: 0;
+}
+.recipe-item {
+background-color: white;
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 10px;
+width: calc(33.333% - 20px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+.recipe-image {
+max-width: 100%;
+border-radius: 8px;
+}
+.recipe-item h3 {
+margin: 10px 0;
+font-size: 1.2rem;
+}
+.recipe-item p {
+font-size: 1rem;
+color: #666;
+}

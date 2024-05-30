@@ -1,0 +1,15 @@
+// src/styles/CarouselComponent.scss
+.carousel-container {
+    padding: 20px;
+    }
+    .carousel-item {
+    text-align: center;
+    }
+    .carousel-image {
+    max-width: 100%;
+    border-radius: 8px;
+    }
+    .carousel-item h3 {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    }

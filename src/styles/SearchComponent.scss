@@ -1,0 +1,15 @@
+// src/styles/SearchComponent.scss
+.search-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    }
+    .search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    gap: 10px;
+    }
+    .search-button {
+    height: 56px; // Adjust to match the TextField height
+    }
