@@ -1,5 +1,7 @@
-import React from 'react';
-import { GoogleLogin } from '@react-oauth/google';
+// src/App.js
+import React, { useState, useEffect } from 'react';
+import { googleLogout, useGoogleLogin, GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationComponent from './components/NavigationComponent';
 import HeroComponent from './components/HeroComponent';
@@ -8,10 +10,39 @@ import DashboardComponent from './components/DashboardComponent';
 import RecipeDetailComponent from './components/RecipeDetailComponent';
 
 function App() {
+    const [user, setUser] = useState(null);
+    const [profile, setProfile] = useState(null);
+
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => setUser(codeResponse),
+        onError: (error) => console.log('Login Failed:', error)
+    });
+
+    useEffect(() => {
+        if (user) {
+            axios
+                .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                    headers: {
+                        Authorization: `Bearer ${user.access_token}`,
+                        Accept: 'application/json'
+                    }
+                })
+                .then((res) => {
+                    setProfile(res.data);
+                })
+                .catch((err) => console.log(err));
+        }
+    }, [user]);
+
+    const logOut = () => {
+        googleLogout();
+        setProfile(null);
+    };
+
     const responseMessage = (response) => {
         console.log(response);
     };
-    
+
     const errorMessage = (error) => {
         console.log(error);
     };
@@ -27,10 +58,25 @@ function App() {
                     <Route path="/recipe/:id" element={<RecipeDetailComponent />} />
                     {/* Add more routes as needed */}
                 </Routes>
-                {/* Place the GoogleLogin component wherever it fits your UI */}
+
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>
                     <h2>Login for more features</h2>
-                    <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+                    {profile ? (
+                        <div>
+                            <img src={profile.picture} alt="user img" />
+                            <h3>User Logged in</h3>
+                            <p>Name: {profile.name}</p>
+                            <p>Email Address: {profile.email}</p>
+                            <br />
+                            <br />
+                            <button onClick={logOut}>Log out</button>
+                        </div>
+                    ) : (
+                        <div>
+                            <button onClick={login}>Sign in with Google 🚀 </button>
+                            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+                        </div>
+                    )}
                 </div>
             </div>
         </Router>
