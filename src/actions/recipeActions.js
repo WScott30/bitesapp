@@ -1,56 +1,65 @@
 // src/actions/recipeActions.js
-import {
-    FETCH_RECIPES_REQUEST,
-    FETCH_RECIPES_SUCCESS,
-    FETCH_RECIPES_FAILURE,
-    FETCH_RECIPE_DETAIL_REQUEST,
-    FETCH_RECIPE_DETAIL_SUCCESS,
-    FETCH_RECIPE_DETAIL_FAILURE,
-    FETCH_FEATURED_RECIPES_REQUEST,
-    FETCH_FEATURED_RECIPES_SUCCESS,
-    FETCH_FEATURED_RECIPES_FAILURE,
+import axios from 'axios';
 
-  } from '../actions/actionTypes';  
-export const fetchRecipes = () => ({
-    type: FETCH_RECIPES_REQUEST,
-});
+// Action types for fetching a single recipe detail
+export const FETCH_RECIPE_DETAIL_REQUEST = 'FETCH_RECIPE_DETAIL_REQUEST';
+export const FETCH_RECIPE_DETAIL_SUCCESS = 'FETCH_RECIPE_DETAIL_SUCCESS';
+export const FETCH_RECIPE_DETAIL_FAILURE = 'FETCH_RECIPE_DETAIL_FAILURE';
 
-export const fetchRecipesSuccess = (recipes) => ({
-    type: FETCH_RECIPES_SUCCESS,
-    payload: recipes,
-});
+// Action creator function to fetch recipe detail
+export const fetchRecipeDetail = (recipeId) => async (dispatch) => {
+  dispatch({ type: FETCH_RECIPE_DETAIL_REQUEST });
 
-export const fetchRecipesFailure = (error) => ({
-    type: FETCH_RECIPES_FAILURE,
-    payload: error,
-});
+  try {
+    const response = await axios.get(`https://api.edamam.com/search`, {
+      params: {
+        r: recipeId,
+        app_id: process.env.REACT_APP_EDAMAM_APP_ID,
+        app_key: process.env.REACT_APP_EDAMAM_APP_KEY,
+      },
+    });
 
-export const fetchRecipeDetail = (id) => ({
-    type: FETCH_RECIPE_DETAIL_REQUEST,
-    payload: id,
-});
+    // Assuming the API returns an array of recipes, and we need the first one
+    const recipeDetail = response.data[0];
 
-export const fetchRecipeDetailSuccess = (recipe) => ({
-    type: FETCH_RECIPE_DETAIL_SUCCESS,
-    payload: recipe,
-});
+    dispatch({
+      type: FETCH_RECIPE_DETAIL_SUCCESS,
+      payload: recipeDetail,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_RECIPE_DETAIL_FAILURE,
+      payload: error.message,
+    });
+  }
+};
 
-export const fetchRecipeDetailFailure = (error) => ({
-    type: FETCH_RECIPE_DETAIL_FAILURE,
-    payload: error,
-});
+// Action types for fetching multiple recipes
+export const FETCH_RECIPES_REQUEST = 'FETCH_RECIPES_REQUEST';
+export const FETCH_RECIPES_SUCCESS = 'FETCH_RECIPES_SUCCESS';
+export const FETCH_RECIPES_FAILURE = 'FETCH_RECIPES_FAILURE';
 
-// Add these if they are not present
-export const fetchFeaturedRecipesRequest = () => ({
-    type: FETCH_FEATURED_RECIPES_REQUEST,
-});
+// Action creator function to fetch multiple recipes
+export const fetchRecipes = (query) => async (dispatch) => {
+  dispatch({ type: FETCH_RECIPES_REQUEST });
 
-export const fetchFeaturedRecipesSuccess = (recipes) => ({
-    type: FETCH_FEATURED_RECIPES_SUCCESS,
-    payload: recipes,
-});
+  try {
+    const response = await axios.get(`https://api.edamam.com/search`, {
+      params: {
+        q: query,
+        app_id: process.env.REACT_APP_EDAMAM_APP_ID,
+        app_key: process.env.REACT_APP_EDAMAM_APP_KEY,
+      },
+    });
 
-export const fetchFeaturedRecipesFailure = (error) => ({
-    type: FETCH_FEATURED_RECIPES_FAILURE,
-    payload: error,
-});
+    dispatch({
+      type: FETCH_RECIPES_SUCCESS,
+      payload: response.data.hits,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_RECIPES_FAILURE,
+      payload: error.message,
+    });
+  }
+};

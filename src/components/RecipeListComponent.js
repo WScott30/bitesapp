@@ -3,26 +3,44 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/RecipeListComponent.scss';
+
 const RecipeListComponent = () => {
-const recipes = useSelector(state => state.recipe.recipes);
-const loading = useSelector(state => state.recipe.loading);
-const error = useSelector(state => state.recipe.error);
-return (
-<div className="recipe-list-container">
-{loading && <p>Loading...</p>}
-{error && <p>{error}</p>}
-<ul className="recipe-list">
-{recipes.map((recipe, index) => (
-<li key={index} className="recipe-item">
-<Link to={`/recipe/${recipe.food.food_id}`}>
-<img src={recipe.food.image_url} alt={recipe.food.food_name} className="recipe-image" />
-<h3>{recipe.food.food_name}</h3>
-<p>{recipe.food.food_description}</p>
-</Link>
-</li>
-))}
-</ul>
-</div>
-);
+  const recipes = useSelector(state => state.recipe.recipes);
+  const loading = useSelector(state => state.recipe.loading);
+  const error = useSelector(state => state.recipe.error);
+
+  return (
+    <div className="recipe-list-container">
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      <ul className="recipe-list">
+        {recipes.length > 0 ? (
+          recipes.map((recipe, index) => {
+            // Check if recipe and its required properties are defined
+            if (!recipe.food || !recipe.food.food_id) {
+              return <li key={index} className="recipe-item">Invalid recipe data</li>;
+            }
+
+            return (
+              <li key={index} className="recipe-item">
+                <Link to={`/recipe/${recipe.food.food_id}`}>
+                  <img
+                    src={recipe.food.image_url || 'default-image-url.jpg'}
+                    alt={recipe.food.food_name || 'No name available'}
+                    className="recipe-image"
+                  />
+                  <h3>{recipe.food.food_name || 'No name available'}</h3>
+                  <p>{recipe.food.food_description || 'No description available'}</p>
+                </Link>
+              </li>
+            );
+          })
+        ) : (
+          <p>No recipes found</p>
+        )}
+      </ul>
+    </div>
+  );
 };
+
 export default RecipeListComponent;
