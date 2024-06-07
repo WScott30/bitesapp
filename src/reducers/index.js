@@ -6,5 +6,5 @@ const rootReducer = combineReducers({
 recipe: recipeReducer,
 auth: authReducer
 });
-console.log(rootReducer)
+//console.log(rootReducer)
 export default rootReducer;
