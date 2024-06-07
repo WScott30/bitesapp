@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
-import { googleLogout, useGoogleLogin, GoogleLogin } from '@react-oauth/google';
+import { googleLogout, useGoogleLogin, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationComponent from './components/NavigationComponent';
@@ -8,6 +8,8 @@ import HeroComponent from './components/HeroComponent';
 import LoginComponent from './components/LoginComponent';
 import DashboardComponent from './components/DashboardComponent';
 import RecipeDetailComponent from './components/RecipeDetailComponent';
+
+const clientID = '630822064137-si5779dp2k60ed1u11bdk227e5aaok9o.apps.googleusercontent.com'
 
 function App() {
     const [user, setUser] = useState(null);
@@ -48,6 +50,7 @@ function App() {
     };
 
     return (
+        <GoogleOAuthProvider clientId={clientID}>
         <Router>
             <div>
                 <NavigationComponent />
@@ -80,6 +83,7 @@ function App() {
                 </div>
             </div>
         </Router>
+        </GoogleOAuthProvider>
     );
 }
 

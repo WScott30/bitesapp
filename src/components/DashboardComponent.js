@@ -7,8 +7,8 @@ import RecipeListComponent from './RecipeListComponent';
 const DashboardComponent = () => {
 const dispatch = useDispatch();
 useEffect(() => {
-dispatch(fetchRecipes('default query')); // Fetch default recipes on load
-}, [dispatch]);
+    dispatch(fetchRecipes('chicken')); // Fetch default recipes on load
+}, []);
 return (
 <div>
 <SearchComponent />

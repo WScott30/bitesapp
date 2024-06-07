@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchRecipeDetail } from '../actions/recipeActions';
 import '../styles/RecipeDetailComponent.scss';
+import { useLocation } from 'react-router-dom';
 
 const RecipeDetailComponent = () => {
     const { id } = useParams();
+    const location = useLocation()
+    const recipeInfo = location.state
     const dispatch = useDispatch();
 
     const recipe = useSelector(state => state.recipe.selectedRecipe);
@@ -15,7 +18,7 @@ const RecipeDetailComponent = () => {
 
     useEffect(() => {
         if (id) {
-            dispatch(fetchRecipeDetail(id));
+            dispatch(fetchRecipeDetail(id, recipeInfo._links.self.href));
         }
     }, [dispatch, id]);
 

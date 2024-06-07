@@ -4,7 +4,7 @@ import axios from 'axios';
 const generateAuthParams = () => {
   return {
     app_id: process.env.EDAMAM_API_ID || 'ab7f013f',
-    app_key: process.env.EDAMAM_API_KEY || '070d8a74d846cf379302b633132b126d	',
+    app_key: process.env.EDAMAM_API_KEY || '070d8a74d846cf379302b633132b126d',
   };
 };
 

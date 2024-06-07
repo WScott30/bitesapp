@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/RecipeListComponent.scss';
+import { returnRecipeID } from '../utils/returnID';
 
 const RecipeListComponent = () => {
   const recipes = useSelector(state => state.recipe.recipes);
@@ -17,20 +18,22 @@ const RecipeListComponent = () => {
         {recipes.length > 0 ? (
           recipes.map((recipe, index) => {
             // Check if recipe and its required properties are defined
-            if (!recipe.food || !recipe.food.food_id) {
+            if (!recipe.recipe.url) {
               return <li key={index} className="recipe-item">Invalid recipe data</li>;
             }
 
             return (
               <li key={index} className="recipe-item">
-                <Link to={`/recipe/${recipe.food.food_id}`}>
+                <Link state={recipe} key={recipe.recipe.url} to={`/recipe/${returnRecipeID(recipe.recipe.uri)}`} style={{textDecoration: 'none', color: 'black'}} >
                   <img
-                    src={recipe.food.image_url || 'default-image-url.jpg'}
-                    alt={recipe.food.food_name || 'No name available'}
+                    src={recipe.recipe.images.SMALL.url || 'default-image-url.jpg'}
+                    
                     className="recipe-image"
                   />
-                  <h3>{recipe.food.food_name || 'No name available'}</h3>
-                  <p>{recipe.food.food_description || 'No description available'}</p>
+                  <h3>{recipe.recipe.label || 'No name available'}</h3>
+                  <ul>{recipe.recipe.ingredients.map(i=>(
+                    <li>{i.text}</li>
+                  ))}</ul>
                 </Link>
               </li>
             );
