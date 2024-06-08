@@ -40,6 +40,7 @@ function App() {
 
     const logOut = () => {
         googleLogout();
+        dispatch({ type: 'LOGOUT_USER' });
         
     };
 
