@@ -3,6 +3,9 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { logoutUser } from '../actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,8 +20,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
+
 const NavigationComponent = () => {
     const classes = useStyles();
+    const user = useSelector(state => state.auth.user);
+    const dispatch = useDispatch();
+    const logoutFunction=()=>{
+        dispatch(logoutUser());
+    }
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -32,9 +42,13 @@ const NavigationComponent = () => {
                     <Button color="inherit" component={Link} to="/dashboard" className={classes.link}>
                         Dashboard
                     </Button>
-                    <Button color="inherit" component={Link} to="/login" className={classes.link}>
+                    {!user && <Button color="inherit" component={Link} to="/login" className={classes.link}>
                         Login
-                    </Button>
+                    </Button>}
+                    {user && <Button onClick={logoutFunction} color="inherit" component={Link}  className={classes.link}>
+                        Logout
+                    </Button>}
+
                 </Toolbar>
             </AppBar>
         </div>

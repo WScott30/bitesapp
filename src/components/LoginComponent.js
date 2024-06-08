@@ -20,6 +20,7 @@ const LoginComponent = () => {
             picture: decoded.picture,
         };
         const token = response.credential;
+        console.log(decoded);
         // Dispatch login action with user data
         dispatch(loginUser({ profile, token }));
         navigate('/dashboard');

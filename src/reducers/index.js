@@ -2,9 +2,9 @@
 import { combineReducers } from 'redux';
 import recipeReducer from './recipeReducer';
 import authReducer from './authReducer';
-const rootReducer = combineReducers({
+const mainReducer = combineReducers({
 recipe: recipeReducer,
 auth: authReducer
 });
 //console.log(rootReducer)
-export default rootReducer;
+export default mainReducer;

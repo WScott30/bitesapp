@@ -5,10 +5,11 @@ import App from './App'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import store from './store';
 
+const clientID = '630822064137-si5779dp2k60ed1u11bdk227e5aaok9o.apps.googleusercontent.com'
 
 ReactDOM.render(
     <Provider store={store}>
-    <GoogleOAuthProvider clientId="386932037035-k8v833noqjk7m4***********.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={clientID}>
         <React.StrictMode>
             <App />
         </React.StrictMode>
