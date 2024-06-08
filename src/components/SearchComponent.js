@@ -12,6 +12,7 @@ const SearchComponent = () => {
   const handleSearch = (event) => {
     event.preventDefault();
     dispatch(fetchRecipes(query));
+    setQuery('')
   };
 
   return (

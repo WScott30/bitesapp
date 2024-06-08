@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import '../styles/RecipeListComponent.scss';
 import { returnRecipeID } from '../utils/returnID';
 
+
 const RecipeListComponent = () => {
   const recipes = useSelector(state => state.recipe.recipes);
   const loading = useSelector(state => state.recipe.loading);
@@ -24,10 +25,10 @@ const RecipeListComponent = () => {
 
             return (
               <li key={index} className="recipe-item">
-                <Link state={recipe} key={recipe.recipe.url} to={`/recipe/${returnRecipeID(recipe.recipe.uri)}`} style={{textDecoration: 'none', color: 'black'}} >
+                <Link state={recipe._links.self.href}  key={recipe.recipe.url} to={`/recipe/${returnRecipeID(recipe.recipe.uri)}`} style={{textDecoration: 'none', color: 'black'}} >
                   <img
                     src={recipe.recipe.images.SMALL.url || 'default-image-url.jpg'}
-                    
+                    alt={recipe.recipe.label || 'No name available'}
                     className="recipe-image"
                   />
                   <h3>{recipe.recipe.label || 'No name available'}</h3>
